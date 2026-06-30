@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  # --- Base de Datos ---
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: protein-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: protein_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: UTC
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - protein-network
+
+  # --- Motor de Análisis (Python) ---
+  python-analyzer:
+    build:
+      context: ./protein-evolution-analyzer # Ruta a la carpeta del proyecto Python
+    container_name: protein-analyzer
+    ports:
+      - "8000:8000"
+    networks:
+      - protein-network
+
+  # --- Backend (Java Spring Boot) ---
+  java-backend:
+    build:
+      context: ./protein-evolution-backend # Ruta a la carpeta del proyecto Java
+    container_name: protein-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/protein_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - ANALYZER_SERVICE_URL=http://python-analyzer:8000 # Comunicación interna
+    depends_on:
+      - postgres-db
+      - python-analyzer
+    networks:
+      - protein-network
+
+  # --- Frontend (React) ---
+  react-frontend:
+    build:
+      context: ./protein-evolution-frontend # Ruta a la carpeta del proyecto React
+    container_name: protein-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - java-backend
+    networks:
+      - protein-network
+
+volumes:
+  postgres_data:
+
+networks:
+  protein-network:
+    driver: bridge
