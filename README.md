@@ -16,7 +16,7 @@ Responsible for:
 - generating protein analysis data
 
 Repository:
-[(link)](https://github.com/fran9300/protein-evolution-backend)
+[protein-evolution-analyzer](https://github.com/fran9300/protein-evolution-analyzer)
 
 
 ### ☕ Backend API
@@ -29,7 +29,7 @@ Responsible for:
 - protein analysis management
 
 Repository:
-[(link)](https://github.com/fran9300/protein-evolution-backend)
+[protein-evolution-backend](https://github.com/fran9300/protein-evolution-backend)
 
 
 ### ⚛️ Frontend
@@ -41,7 +41,7 @@ Responsible for:
 - interaction with backend API
 
 Repository:
-[(link)](https://github.com/fran9300/protein-evolution-frontend)
+[protein-evolution-frontend](https://github.com/fran9300/protein-evolution-frontend)
 
 
 ## Current Status
